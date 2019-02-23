@@ -76,7 +76,7 @@ function closestDistances() {setTimeout(function() {
                 Object.values(arrData)[i][1]["San Jose, CA"],
                 Object.values(arrData)[i][1]["Tulsa, OK"]
         ];*/
-    
+//Ensure no site has more than 2 teams
         if (Colombia >= 2) {
             for (var j2 = 0; j2 < arrDistance.length; j2++) {
                 if (arrDistance[j2][0] == "Colombia, SC") {
@@ -135,9 +135,9 @@ function closestDistances() {setTimeout(function() {
         };
         
 
-// This starts a function that tells you the closest regional site
+// The Meat and Potatoes of the sorting and writing of closest regions
         if (arrDistance.length === 0) {
-            $('main').append(i + 1 + ". " + team + ": " + "<br>");
+            $('main').append(i + 1 + ". " + team + "<br>");
         } else {
             var minIndex = 0;
             var min = arrDistance[0][1];
@@ -147,7 +147,34 @@ function closestDistances() {setTimeout(function() {
                     min = arrDistance[j][1];
                 }
             }
+/*        var listPlaceholder =
+        '<table> +
+            '<tr>' +
+                '<th>Rank</th>'
+                '<th>Team</th>' +
+                '<th>Site</th>' +
+                '<th>Distance</th>' +
+            '</tr>' +
+            '<tr>' +
+                '<td>1</td>' +
+                '<td>Duke</td>' +
+                '<td>Colombia, SC</td>' +
+                '<td>182.44</td>' +
+            '</tr>' +
+        '</table>';
+            
+            
+            var listPlaceholder +=*/
+            
+            
+            
+            
             var listPlaceholder = i + 1 + ". " + team + ": " + arrDistance[minIndex] + "<br>";
+            
+            
+            
+            
+            
             console.log(listPlaceholder);
             $('main').append(listPlaceholder);
 //            document.write(i + 1 + ". " + team + ": " + arrDistance[minIndex] + "<br>");
@@ -185,10 +212,10 @@ for (var i = 1; i < arrData.length; i++) {
 }*/
 function isuRank() {
     var pickedTeamCurrentRank = prompt("what is the rank of the team you want to change?");
-    var newRank = prompt("What rank will that team end up?");
+    var newRank = parseInt(prompt("What rank will that team end up?"));
     var placeholder = data[pickedTeamCurrentRank];
     if (newRank < pickedTeamCurrentRank) {   
-        for (var i = pickedTeamCurrentRank; i > newRank; i--) {
+        for (var i = pickedTeamCurrentRank; i > newRank - 1; i--) {
             console.log("changing from " + pickedTeamCurrentRank + " to " + newRank);
             data[i] = data[i -1];
         }
@@ -197,7 +224,7 @@ function isuRank() {
         console.log(pickedTeamCurrentRank);
     } else if (newRank > pickedTeamCurrentRank) {
         console.log("changing from " + pickedTeamCurrentRank + " to " + newRank);
-        for (var i = pickedTeamCurrentRank; i < newRank; i++) {
+        for (var i = pickedTeamCurrentRank; i < newRank + 1 && i < 36; i++) {
             data[i] = data[i + 1];
         }
     } else {
@@ -207,10 +234,14 @@ function isuRank() {
     console.log("finished changing ranks, starting closestDistances()")
     closestDistances();
 }
-function startIsuRank() {setTimeout(function() {
-    isuRank();
-}, 1000);}
-startIsuRank();5
+
+
+
+// Call the function after clicking instead on page load
+//function startIsuRank() {setTimeout(function() {
+//    isuRank();
+//}, 1000);}
+//startIsuRank();
 //Object.keys(user) = ["name", "age"]
 //Object.values(user) = ["John", 30]
 //Object.entries(user) = [ ["name","John"], ["age",30] ]
