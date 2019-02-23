@@ -1,13 +1,7 @@
 /*eslint-env browser*/
 var data, arrData;
-var Columbus = 0;
-var Colombia = 0;
-var DSM = 0;
-var Hartford = 0;
-var Jacksonville = 0;
-var SLC = 0;
-var SJ = 0;
-var Tulsa = 0;
+var closestDistances;
+
 var siteNames = [
     "Colombia, SC",
     "Columbus, OH",
@@ -44,7 +38,19 @@ $.getJSON('data.json',
 });
 
 //setTimeout so that the json data loads before calling the function
-var closestDistances = setTimeout(function() {
+function closestDistances() {setTimeout(function() {
+//Empty the body tag, then add an ISU Button before writing the code
+
+    $('body').append("<input type='button' id='changeIsuRank' value='Change ISU Ranking'> <br>");
+    var Columbus = 0;
+    var Colombia = 0;
+    var DSM = 0;
+    var Hartford = 0;
+    var Jacksonville = 0;
+    var SLC = 0;
+    var SJ = 0;
+    var Tulsa = 0;
+    window.arrData = Object.keys(data).map((key) => [key, data[key]]);
     for (var i = 0; i < arrData.length; i++) {
 
         var team = Object.values(arrData)[i][1]["Team"];
@@ -131,7 +137,7 @@ var closestDistances = setTimeout(function() {
 
 // This starts a function that tells you the closest regional site
         if (arrDistance.length === 0) {
-            document.write(i + 1 + ". " + team + ": " + "<br>");
+            $('.rankAndSites').append(i + 1 + ". " + team + ": " + "<br>");
         } else {
             var minIndex = 0;
             var min = arrDistance[0][1];
@@ -141,7 +147,7 @@ var closestDistances = setTimeout(function() {
                     min = arrDistance[j][1];
                 }
             }
-            document.write(i + 1 + ". " + team + ": " + arrDistance[minIndex] + "<br>");
+            $('.rankAndSites').append(i + 1 + ". " + team + ": " + arrDistance[minIndex] + "<br>");
     // add to each region when a team fills it
             if (arrDistance[minIndex][0] == "Colombia, SC") {
                 Colombia += 1;
@@ -162,10 +168,40 @@ var closestDistances = setTimeout(function() {
             } 
         }
     }
-}, 800);
-closestDistances;
+}, 800);}
+closestDistances();
 
+/*data[6] = data[13];
+delete data[13];
 
+for (var i = 1; i < arrData.length; i++) {
+    if (data[i] == null) {
+            data[i] = data[i + 1];
+            data[i + 1] = null;
+    }
+}*/
+function changeRanks() {
+    var isuRank = prompt("What rank will ISU end up?");
+    var placeholder = data[13];
+        $('.rankAndSites').empty();
+    if (isuRank < 13) {   
+        for (var i = 13; i > isuRank; i--) {
+            data[i] = data[i -1];
+        }
+    } else if(isuRank == 13) {
+        alert("come on, we can do better");
+    } else if (isuRank > 13) {
+        for (var i = 13; i < isuRank; i++) {
+            data[i] = data[i + 131];
+        }
+    }
+    data[isuRank] = placeholder;
+    closestDistances();
+}
+function startChangeRanks() {setTimeout(function() {
+    changeRanks();
+}, 1000);}
+startChangeRanks();
 //Object.keys(user) = ["name", "age"]
 //Object.values(user) = ["John", 30]
 //Object.entries(user) = [ ["name","John"], ["age",30] ]
