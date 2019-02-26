@@ -27,7 +27,7 @@ function removeA(arr) {
     return arr;
 }
 
-$.getJSON('data2-26-19.json',
+$.getJSON('data/data2-26-19.json',
     function (data) {
         "use strict";
         window.data = data;
@@ -40,15 +40,15 @@ $.getJSON('data2-26-19.json',
 //setTimeout so that the json data loads before calling the function
 function closestDistances() {setTimeout(function() {
 //Empty the body tag, then add an ISU Button before writing the code
-    $('main').empty();
+    $('#table').empty();
 //    $('body').append("<input type='button' id='changeIsuRank' value='Change ISU Ranking'> <br>");
     var table = 
-            '<table>' +
+            '<table id="siteTable">' +
                 '<tr>' +
                     '<th>Rank</th>' +
                     '<th>Team</th>' +
                     '<th>Site</th>' +
-                    '<th>Distance</th>' +
+                    '<th>Distance (Miles)</th>' +
                 '</tr>';
     var Columbus = 0;
     var Colombia = 0;
@@ -158,12 +158,15 @@ function closestDistances() {setTimeout(function() {
         } else {
             var minIndex = 0;
             var min = arrDistance[0][1];
+            var closestSite;
             for (var j = 0; j < arrDistance.length; j++) {
                 if (arrDistance[j][1] < min) {
                     minIndex = j;
                     min = arrDistance[j][1];
+                    closestSite = arrDistance[minIndex][0];
                 }
             }
+            console.log(typeof(closestSite));
             var listPlaceholder =
     /*        '<table> +
                 '<tr>' +
@@ -176,7 +179,16 @@ function closestDistances() {setTimeout(function() {
                     '<td>' + (i + 1) + '</td>' +
                     '<td>' + team + '</td>' +
                     '<td>' + arrDistance[minIndex][0] + '</td>' +
-                    '<td>' + arrDistance[minIndex][1] + ' Miles</td>' +
+                    '<td>' + min + '</td>' +
+    //                '<td>Duke</td>' +
+    //                '<td>Colombia, SC</td>' +
+    //                '<td>182.44</td>' +
+                '</tr>';
+                '<tr>' +
+                    '<td>' + (33 - i) + '</td>' +
+                    '<td>' + data[i + 1]["Team"] + '</td>' +
+                    '<td>' + arrDistance[minIndex][0] + '</td>' +
+//                    '<td>' + data[33 - i][closestSite] + ' Miles</td>' +
     //                '<td>Duke</td>' +
     //                '<td>Colombia, SC</td>' +
     //                '<td>182.44</td>' +
@@ -210,7 +222,14 @@ function closestDistances() {setTimeout(function() {
         }
     }
     table += '</table>';
-    $('main').append(table);
+
+    $('#table').append(table);
+//Go back and match up the teams 17-32 with their 1-16 opponent
+    for (var i = 17; i <= 32; i++) {
+        document.getElementById("siteTable").rows[i].cells[2].innerHTML = document.getElementById("siteTable").rows[33 - i].cells[2].innerHTML;
+        var matchedSiteDistance = data[i][(document.getElementById("siteTable").rows[33 - i].cells[2].innerHTML)];
+        document.getElementById("siteTable").rows[i].cells[3].innerHTML += matchedSiteDistance;
+    }
 }, 800);}
 closestDistances();
 
@@ -227,25 +246,29 @@ function isuRank() {
     var pickedTeamCurrentRank = parseInt(prompt("what is the rank of the team you want to change?"));
     var newRank = parseInt(prompt("What rank will that team end up?"));
     var placeholder = data[pickedTeamCurrentRank];
-    if (newRank < pickedTeamCurrentRank) {   
-        for (var i = pickedTeamCurrentRank; i > newRank - 1; i--) {
-            console.log("changing from " + pickedTeamCurrentRank + " to " + newRank);
-            data[i] = data[i -1];
+    if (isNaN(pickedTeamCurrentRank) || isNaN(newRank) || pickedTeamCurrentRank < 1 || pickedTeamCurrentRank > 32 || newRank > 32 || newRank < 1) {
+        alert("You must type numbers between 1 and 32 for both prompts");
+        } else {
+            if (newRank < pickedTeamCurrentRank) {
+                for (var i = pickedTeamCurrentRank; i > newRank - 1; i--) {
+                    console.log("changing from " + pickedTeamCurrentRank + " to " + newRank);
+                    data[i] = data[i -1];
+                }
+            } else if(newRank == pickedTeamCurrentRank) {
+                console.log("Same rank as before");
+                console.log(pickedTeamCurrentRank);
+            } else if (newRank > pickedTeamCurrentRank) {
+                console.log("changing from " + pickedTeamCurrentRank + " to " +newRank);
+                for (var i = pickedTeamCurrentRank; i < newRank + 1 && i < 33; i++) {
+                    data[i] = data[i + 1];
+                }
+            } else {
+                console.log(pickedTeamCurrentRank, newRank, placeholder, data)
+            }
+            data[newRank] = placeholder;
+            console.log("finished changing ranks, starting closestDistances()");
+            closestDistances();
         }
-    } else if(newRank == pickedTeamCurrentRank) {
-        console.log("Same rank as before");
-        console.log(pickedTeamCurrentRank);
-    } else if (newRank > pickedTeamCurrentRank) {
-        console.log("changing from " + pickedTeamCurrentRank + " to " + newRank);
-        for (var i = pickedTeamCurrentRank; i < newRank + 1 && i < 33; i++) {
-            data[i] = data[i + 1];
-        }
-    } else {
-        console.log(pickedTeamCurrentRank, newRank, placeholder, data)
-    }
-    data[newRank] = placeholder;
-    console.log("finished changing ranks, starting closestDistances()")
-    closestDistances();
 }
 
 //document.getElementById("currentRank").addEventListener()
