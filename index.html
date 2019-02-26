@@ -3,15 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>NCAA Tournament First Round Distance </title>
+    <link rel="stylesheet" href="css/styles.css">
+    
+</head>
+<body>
+<article>
+           <h1 class="center">What if Net Ranking and Geography were all that mattered?</h1>
+               <p>
+           The NCAA Basketball tournament gives priority site placement to teams on the top 4 seed lines (16 teams in total). There are eight 1st/2nd round sites, and each site has two "pods" which may feed into different regional sites. Once each site has been filled by two top teams no other top 4 seed can be placed there. I have taken the straight line distance from home gym to potential 1st/2nd round gym of every team in the top 32 of the Net Rankings (as of 2/26/19) and written a program that outputs the closest site available for the top 4 seed lines. Click the button to find out how the site distances might change as teams move up or down the rankings. Iowa State for instance must pass Michigan, Purdue, Wisconsin, and LSU to get Des Moines. But could also be helped by Virginia or Kentucky falling down the rankings.
+              </p>
+    <div class="center">
+<!--
+        <input type="text" id="currentRank" value="Current Rank"><br>
+        <input type="text" id="newRank" value="Potential Rank"><br>
+-->
+        <input type='button' id='changeIsuRank' value='Change a Ranking' onclick="isuRank()"> <br>
+    </div>
+               
+</article>
+
+    <main>
+    </main>
+<section>
+            <p>
+                When reading <a href="https://www.ncaa.com/news/basketball-men/article/2018-10-19/how-field-68-teams-picked-march-madness">How the Field of 68 teams is picked for March Madness</a> I saw three notable indications of potential first round site changes away from the true seeds:
+            </p>
+            <ul>
+                <li>"The committee shall not place teams seeded on the first four lines at a potential 'home-crowd disadvantage' in the first round."</li>
+                <li>"Teams will remain in or as close to their areas of natural interest as possible. A team moved out of its natural area will be placed in the next closest region to the extent possible." </li>
+                <li>"If possible, after examining the previous two years’ brackets, teams or conferences will not be moved out of its natural region or geographic area an inordinate number of times"</li>
+            </ul>
+                <div class="center">
+            <blockquote></blockquote>
+            <blockquote></blockquote>
+            <blockquote>  </blockquote>
+            </div>
+                <a href="https://www.ncaa.com/rankings/basketball-men/d1/ncaa-mens-basketball-net-rankings">NCAA Net Rankings</a><br>
+        </section>
     <script
     src="https://code.jquery.com/jquery-3.3.1.js"
     integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
     crossorigin="anonymous"></script>
     <script src="pushData.js"></script>
-</head>
-<body>
-    <input type='button' id='changeIsuRank' value='Change a Ranking' onclick="isuRank()"> <br>
-    <main>
-    </main>
 </body>
 </html>

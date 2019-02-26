@@ -27,7 +27,7 @@ function removeA(arr) {
     return arr;
 }
 
-$.getJSON('data.json',
+$.getJSON('data2-26-19.json',
     function (data) {
         "use strict";
         window.data = data;
@@ -42,6 +42,14 @@ function closestDistances() {setTimeout(function() {
 //Empty the body tag, then add an ISU Button before writing the code
     $('main').empty();
 //    $('body').append("<input type='button' id='changeIsuRank' value='Change ISU Ranking'> <br>");
+    var table = 
+            '<table>' +
+                '<tr>' +
+                    '<th>Rank</th>' +
+                    '<th>Team</th>' +
+                    '<th>Site</th>' +
+                    '<th>Distance</th>' +
+                '</tr>';
     var Columbus = 0;
     var Colombia = 0;
     var DSM = 0;
@@ -137,7 +145,16 @@ function closestDistances() {setTimeout(function() {
 
 // The Meat and Potatoes of the sorting and writing of closest regions
         if (arrDistance.length === 0) {
-            $('main').append(i + 1 + ". " + team + "<br>");
+            var listPlaceholder =
+                '<tr>' +
+                    '<td>' + (i+1) + '</td>' +
+                    '<td>' + team + '</td>' +
+                    '<td>' + '</td>' +
+                    '<td>' + '</td>' +
+                '</tr>';
+//            $('main').append(i + 1 + ". " + team + "<br>");
+            table += listPlaceholder;
+//            $('main').append(listPlaceholder);
         } else {
             var minIndex = 0;
             var min = arrDistance[0][1];
@@ -147,36 +164,30 @@ function closestDistances() {setTimeout(function() {
                     min = arrDistance[j][1];
                 }
             }
-/*        var listPlaceholder =
-        '<table> +
-            '<tr>' +
-                '<th>Rank</th>'
-                '<th>Team</th>' +
-                '<th>Site</th>' +
-                '<th>Distance</th>' +
-            '</tr>' +
-            '<tr>' +
-                '<td>1</td>' +
-                '<td>Duke</td>' +
-                '<td>Colombia, SC</td>' +
-                '<td>182.44</td>' +
-            '</tr>' +
-        '</table>';
-            
-            
-            var listPlaceholder +=*/
-            
-            
-            
-            
-            var listPlaceholder = i + 1 + ". " + team + ": " + arrDistance[minIndex] + "<br>";
-            
-            
-            
-            
-            
-            console.log(listPlaceholder);
-            $('main').append(listPlaceholder);
+            var listPlaceholder =
+    /*        '<table> +
+                '<tr>' +
+                    '<th>Rank</th>'
+                    '<th>Team</th>' +
+                    '<th>Site</th>' +
+                    '<th>Distance</th>' +
+                '</tr>' +*/
+                '<tr>' +
+                    '<td>' + (i + 1) + '</td>' +
+                    '<td>' + team + '</td>' +
+                    '<td>' + arrDistance[minIndex][0] + '</td>' +
+                    '<td>' + arrDistance[minIndex][1] + ' Miles</td>' +
+    //                '<td>Duke</td>' +
+    //                '<td>Colombia, SC</td>' +
+    //                '<td>182.44</td>' +
+                '</tr>';
+    /*        '</table>';*/
+
+//            var listPlaceholder = i + 1 + ". " + team + ": " + arrDistance[minIndex] + "<br>";
+//            
+            table += listPlaceholder;
+//            console.log(listPlaceholder);
+//            $('main').append(listPlaceholder);
 //            document.write(i + 1 + ". " + team + ": " + arrDistance[minIndex] + "<br>");
     // add to each region when a team fills it
             if (arrDistance[minIndex][0] == "Colombia, SC") {
@@ -198,6 +209,8 @@ function closestDistances() {setTimeout(function() {
             } 
         }
     }
+    table += '</table>';
+    $('main').append(table);
 }, 800);}
 closestDistances();
 
@@ -211,7 +224,7 @@ for (var i = 1; i < arrData.length; i++) {
     }
 }*/
 function isuRank() {
-    var pickedTeamCurrentRank = prompt("what is the rank of the team you want to change?");
+    var pickedTeamCurrentRank = parseInt(prompt("what is the rank of the team you want to change?"));
     var newRank = parseInt(prompt("What rank will that team end up?"));
     var placeholder = data[pickedTeamCurrentRank];
     if (newRank < pickedTeamCurrentRank) {   
@@ -224,7 +237,7 @@ function isuRank() {
         console.log(pickedTeamCurrentRank);
     } else if (newRank > pickedTeamCurrentRank) {
         console.log("changing from " + pickedTeamCurrentRank + " to " + newRank);
-        for (var i = pickedTeamCurrentRank; i < newRank + 1 && i < 36; i++) {
+        for (var i = pickedTeamCurrentRank; i < newRank + 1 && i < 33; i++) {
             data[i] = data[i + 1];
         }
     } else {
@@ -235,21 +248,5 @@ function isuRank() {
     closestDistances();
 }
 
+//document.getElementById("currentRank").addEventListener()
 
-
-// Call the function after clicking instead on page load
-//function startIsuRank() {setTimeout(function() {
-//    isuRank();
-//}, 1000);}
-//startIsuRank();
-//Object.keys(user) = ["name", "age"]
-//Object.values(user) = ["John", 30]
-//Object.entries(user) = [ ["name","John"], ["age",30] ]
-
-/*//Removing from siteNames makes 3rd+ teams region undefined
-            removeA(siteNames, "Colombia, SC");
-// delete will remove from the global object
-            delete Object.values(arrData)[i][1]["Colombia, SC"];
-
-//Distances are numbers, gotta delete from the index
-            removeA(distances, "Colombia, SC");*/
